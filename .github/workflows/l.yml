@@ -1,0 +1,25 @@
+name: Inventory Scraper
+
+on:
+  push:
+  workflow_dispatch:
+  schedule:
+    - cron:  '5,15,25,35,45,55 * * * *'
+
+jobs:
+  scheduled:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v2
+    - name: Fetch Inventory Data
+      run: |-
+        curl https://shop.lululemon.com/api/shipinventory\?skus\=114800702\&productId\=prod9750643 | jq . > surge_hybrid_xs_blk.json
+    - name: Commit and push if it changed
+      run: |-
+        git config user.name "Automated"
+        git config user.email "actions@users.noreply.github.com"
+        git add -A
+        timestamp=$(date -u)
+        git commit -m "Latest update: ${timestamp}" || exit 0
+        git push
