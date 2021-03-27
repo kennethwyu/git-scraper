@@ -4,7 +4,7 @@ on:
   push:
   workflow_dispatch:
   schedule:
-    - cron:  '*/10 * * * *'
+    - cron:  '*/15 * * * *'
 
 jobs:
   scheduled:
@@ -14,7 +14,7 @@ jobs:
       uses: actions/checkout@v2
     - name: Fetch Inventory Data
       run: |-
-        curl https://shop.lululemon.com/api/shipinventory\?skus\=114800702\&productId\=prod9750643 | jq . > surge_hybrid_xs_blk.json
+        curl https://shop.lululemon.com/api/shipinventory/?skus\=113275232\&productId\=prod9610199 | jq . > surge_xs_blk.json
     - name: Commit and push if it changed
       run: |-
         git config user.name "Automated"
